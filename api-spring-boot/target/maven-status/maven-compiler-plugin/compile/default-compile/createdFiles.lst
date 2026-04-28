@@ -1,0 +1,4 @@
+com\example\etudiant\Etudiant.class
+com\example\etudiant\EtudiantController.class
+com\example\etudiant\EtudiantRepository.class
+com\example\etudiant\EtudiantApplication.class
