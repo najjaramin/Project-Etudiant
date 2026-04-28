@@ -1,28 +1,39 @@
-version: '3.8'
 services:
   db:
-    image: postgres:15-alpine
+    image: postgres:15
     container_name: etudiants-db
     environment:
-      POSTGRES_DB: etudiantsdb
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-    networks: [etudiants-net]
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - etudiants-net
 
   redis:
     image: redis:alpine
     container_name: etudiants-redis
-    networks: [etudiants-net]
+    ports:
+      - "6379:6379"
+    networks:
+      - etudiants-net
 
   api:
     build: ./api-spring-boot
     container_name: etudiants-api
-    ports: ["8080:8080"]
+    ports:
+      - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/etudiantsdb
-      SPRING_REDIS_HOST: redis
-    depends_on: [db, redis]
-    networks: [etudiants-net]
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - db
+    networks:
+      - etudiants-net
 
 networks:
   etudiants-net:

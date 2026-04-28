@@ -1,3 +1,7 @@
 D:\projet-etudiants\api-spring-boot\src\main\java\com\example\etudiants\entity\Etudiant.java
-D:\projet-etudiants\api-spring-boot\src\main\java\com\example\etudiant\EtudiantApplication.java
+D:\projet-etudiants\api-spring-boot\src\main\java\com\example\etudiants\service\EtudiantService.java
+D:\projet-etudiants\api-spring-boot\src\main\java\com\example\etudiants\dto\EtudiantDTO.java
+D:\projet-etudiants\api-spring-boot\src\main\java\com\example\etudiants\repository\EtudiantRepository.java
+D:\projet-etudiants\api-spring-boot\src\main\java\com\example\etudiants\controller\EtudiantController.java
+D:\projet-etudiants\api-spring-boot\src\main\java\com\example\etudiants\EtudiantsApplication.java
 D:\projet-etudiants\api-spring-boot\src\main\java\com\example\etudiants\entity\Departement.java

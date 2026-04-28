@@ -1,6 +1,7 @@
+com\example\etudiants\dto\EtudiantDTO.class
 com\example\etudiants\entity\Etudiant.class
-com\example\etudiant\Etudiant.class
-com\example\etudiant\EtudiantController.class
+com\example\etudiants\service\EtudiantService.class
+com\example\etudiants\controller\EtudiantController.class
+com\example\etudiants\repository\EtudiantRepository.class
+com\example\etudiants\EtudiantsApplication.class
 com\example\etudiants\entity\Departement.class
-com\example\etudiant\EtudiantRepository.class
-com\example\etudiant\EtudiantApplication.class

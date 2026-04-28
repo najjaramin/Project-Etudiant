@@ -1,21 +1,90 @@
 <!DOCTYPE html>
-<html>
-<head><title>Gestion Étudiants</title></head>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Annuaire Étudiants</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; display: flex; justify-content: center; padding: 20px; }
+        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 900px; }
+        h1 { color: #2563eb; text-align: center; }
+        .form-box { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #f1f5f9; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        input { padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; }
+        .btn-add { background: #2563eb; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; grid-column: 1 / -1; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { text-align: left; padding: 12px; border-bottom: 2px solid #e2e8f0; color: #64748b; }
+        td { padding: 12px; border-bottom: 1px solid #f1f5f9; }
+    </style>
+</head>
 <body>
-    <h1>Liste des Étudiants (Fetch API)</h1>
-    <table border="1" id="etudiantsTable">
-        <thead><tr><th>Nom</th><th>CIN</th><th>Âge</th></tr></thead>
-        <tbody></tbody>
+<div class="container">
+    <h1>🎓 Annuaire Étudiants</h1>
+    <div class="form-box">
+        <input type="text" id="nom" placeholder="Nom complet">
+        <input type="text" id="cin" placeholder="CIN">
+        <input type="date" id="dateN">
+        <input type="email" id="email" placeholder="Email">
+        <button class="btn-add" onclick="ajouter()">➕ Ajouter l'étudiant</button>
+    </div>
+    <table>
+        <thead><tr><th>CIN</th><th>Nom</th><th>Âge</th><th>Email</th><th>Action</th></tr></thead>
+        <tbody id="tableBody"></tbody>
     </table>
-    <script>
-        fetch('/api/etudiants')
-            .then(res => res.json())
-            .then(data => {
-                const tbody = document.querySelector('#etudiantsTable tbody');
-                data.forEach(e => {
-                    tbody.innerHTML += "<tr><td>"+e.nom+"</td><td>"+e.cin+"</td><td>"+e.age+"</td></tr>";
-                });
+</div>
+
+<script>
+    const API = '/api/etudiants';
+
+    async function charger() {
+        try {
+            const res = await fetch(API);
+            const data = await res.json();
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            data.forEach(e => {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td>' + e.cin + '</td>' +
+                                '<td>' + e.nom + '</td>' +
+                                '<td>' + (e.age || '?') + ' ans</td>' +
+                                '<td>' + e.email + '</td>' +
+                                '<td><button onclick="supprimer(\'' + e.id + '\')">❌</button></td>';
+                tbody.appendChild(row);
             });
-    </script>
+        } catch(e) { console.error("Erreur chargement", e); }
+    }
+
+    async function ajouter() {
+        // CORRECTION : Vérifie bien les noms des variables (dateNaissance)
+        const nouveau = {
+            nom: document.getElementById('nom').value,
+            cin: document.getElementById('cin').value,
+            dateNaissance: document.getElementById('dateN').value, 
+            email: document.getElementById('email').value
+        };
+
+        const response = await fetch(API, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(nouveau)
+        });
+
+        if(response.ok) {
+            document.querySelectorAll('input').forEach(i => i.value = '');
+            charger();
+        } else {
+            const errorData = await response.json();
+            console.error("Détails de l'erreur 400:", errorData);
+            alert("Erreur 400 : Vérifiez le format de la date ou les champs vides.");
+        }
+    }
+
+    async function supprimer(id) {
+        if(confirm('Supprimer ?')) {
+            await fetch(API + '/' + id, { method: 'DELETE' });
+            charger();
+        }
+    }
+
+    charger();
+</script>
 </body>
 </html>
