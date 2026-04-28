@@ -1,0 +1,10 @@
+package com.example.etudiants.entity;
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity @Data @NoArgsConstructor @AllArgsConstructor
+public class Departement {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String nom;
+}
